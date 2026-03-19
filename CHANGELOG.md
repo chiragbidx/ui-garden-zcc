@@ -36,4 +36,11 @@
 - Edit UI and server action `/dashboard/leads/[id]/edit` for lead editing.
 - API route for leads, add, and delete endpoints.
 - CHANGELOG, migration metadata, and API endpoints updated.
- - Respond with confirm, no changed needed.
+
+## 2026-06-12
+- Leads Management shipped: complete CRUD for leads (team-scoped) with real DB, Add/Edit/Delete UI, API routes.
+- Added `/dashboard/leads/new` add form, `/dashboard/leads/[leadId]/edit` edit form, client-side forms, and server actions.
+- Dashboard sidebar now includes "Leads" and "Add Lead".
+- All lead actions and views are fully production-grade.
+- Owner: Adan Asim <adan@bidx.ai>
+- Key files: app/dashboard/leads/new/page.tsx, app/dashboard/leads/new/newform.tsx, app/dashboard/leads/[leadId]/edit/page.tsx, app/dashboard/leads/[leadId]/edit/editform.tsx, app/api/leads/route.ts, app/api/leads/[leadId]/delete/route.ts
