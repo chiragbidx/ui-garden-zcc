@@ -28,15 +28,18 @@ async function getCurrentTeamId() {
 }
 
 // CREATE lead
-export async function createLeadAction(formData: FormData) {
+export async function createLeadAction(
+  prevState: any,
+  values: { name: string; email: string; status: string; notes?: string }
+) {
   const session = await getAuthSession();
   if (!session) return { error: "Not signed in" };
 
   const parse = leadFormSchema.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    status: formData.get("status") || "new",
-    notes: formData.get("notes") || ""
+    name: values.name,
+    email: values.email,
+    status: values.status || "new",
+    notes: values.notes || ""
   });
   if (!parse.success) return { error: "Validation failed" };
 
@@ -65,17 +68,21 @@ export async function getLeadForEdit(id: string, teamId: string) {
 }
 
 // UPDATE lead
-export async function updateLeadAction(id: string, formData: FormData) {
+export async function updateLeadAction(
+  id: string,
+  prevState: any,
+  values: { name: string; email: string; status: string; notes?: string }
+) {
   const session = await getAuthSession();
   if (!session) return { error: "Not signed in" };
 
   const teamId = await getCurrentTeamId();
 
   const parse = leadFormSchema.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    status: formData.get("status"),
-    notes: formData.get("notes") || "",
+    name: values.name,
+    email: values.email,
+    status: values.status,
+    notes: values.notes || "",
   });
   if (!parse.success) return { error: "Validation failed" };
 
