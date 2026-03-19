@@ -1,12 +1,12 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { createLeadAction } from "@/app/dashboard/leads/actions";
 
 const initialState = { error: null };
 
 export default function AddLeadClient() {
-  const [state, formAction] = useFormState(createLeadAction, initialState);
+  const [state, formAction] = useActionState(createLeadAction, initialState);
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[35vh] md:min-h-[60vh] text-center">
