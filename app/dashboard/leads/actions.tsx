@@ -5,9 +5,8 @@ import { leads, teams, teamMembers } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { getAuthSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
-
-// Zod validation schema for leads (keep local, not exported)
 import { z } from "zod";
+
 const leadFormSchema = z.object({
   name: z.string().min(2).max(255),
   email: z.string().email(),
@@ -15,8 +14,8 @@ const leadFormSchema = z.object({
   notes: z.string().max(2000).optional().default(""),
 });
 
-// Helper: get teamId for the current user
-async function getCurrentTeamId() {
+// Helper: get teamId for the current user (now exported)
+export async function getCurrentTeamId() {
   const session = await getAuthSession();
   if (!session) throw new Error("Unauthorized");
   // Assume first team member as primary team (future: allow switching)
