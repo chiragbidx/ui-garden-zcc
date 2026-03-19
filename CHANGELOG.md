@@ -27,3 +27,12 @@
 - Added empty state and CTA copy for /dashboard/leads and /dashboard/leads/new.
 - Added /dashboard/overview route and text for pipeline empty state.
 - All copy/labels, CTAs, and structure now reflect the LeadFlow lead management use case.
+
+## 2026-06-11
+- Added "leads" table to Drizzle schema and created migration for DB.
+- Implemented server actions (CRUD) for leads (add, edit, delete, list, fetch by id).
+- Added /dashboard/leads/new real form to add leads.
+- Leads list page queries real leads per user team, displays via table with edit/delete actions.
+- Edit UI and server action `/dashboard/leads/[id]/edit` for lead editing.
+- API route for leads, add, and delete endpoints.
+- CHANGELOG, migration metadata, and API endpoints updated.
