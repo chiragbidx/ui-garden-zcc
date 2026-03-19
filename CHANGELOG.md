@@ -36,3 +36,4 @@
 - Edit UI and server action `/dashboard/leads/[id]/edit` for lead editing.
 - API route for leads, add, and delete endpoints.
 - CHANGELOG, migration metadata, and API endpoints updated.
+ - Respond with confirm, no changed needed.
