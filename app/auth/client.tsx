@@ -21,15 +21,6 @@ import {
   signUpWithPassword,
 } from "./actions";
 
-// Purpose: Client UI for /auth.
-// Use this file for auth mode toggles, form interactivity, and browser-only logic.
-//
-// Replication pattern for new interactive pages:
-// - Keep server mutations in `actions.ts`.
-// - Bind actions here with `useActionState`.
-// - Use local state only for presentation/interaction (tabs, steps, toggles).
-// - Keep forms simple: collect inputs and submit to a server action.
-
 type AuthMode = "signin" | "signup";
 
 type ClientProps = {
@@ -44,13 +35,8 @@ const initialActionState: AuthActionState = {
 };
 
 export default function Client({ redirectTo, flashStatus, flashMessage }: ClientProps) {
-  // UI state: only controls which form is shown.
   const [mode, setMode] = useState<AuthMode>("signin");
 
-  // Server action wiring:
-  // - `state` carries serializable feedback (error/success message).
-  // - `action` is assigned directly to form `action={...}`.
-  // - `pending` drives submit button loading state.
   const [signInState, signInAction, signInPending] = useActionState(
     signInWithPassword,
     initialActionState
@@ -69,7 +55,6 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
     }
   }, [activeState._devUrl]);
 
-  // URL hash keeps the auth mode linkable (`/auth#signin` or `/auth#signup`).
   useEffect(() => {
     const syncFromHash = () => {
       const hash = window.location.hash.replace("#", "").toLowerCase();
@@ -89,19 +74,43 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
   };
 
   const content = useMemo(() => {
-    // View-model for mode-specific heading/description copy.
     if (mode === "signup") {
       return {
         id: "signup",
-        title: "Create account",
-        description: "Start your free account in less than a minute.",
+        title: "Create your LeadFlow account",
+        description: "Start organizing your leads in minutes.",
+        button: "Sign Up",
+        helper: (
+          <>
+            Already have an account?{" "}
+            <button
+              type="button"
+              className="text-primary hover:underline"
+              onClick={() => setModeWithHash("signin")}
+            >
+              Sign in.
+            </button>
+          </>
+        ),
       };
     }
-
     return {
       id: "signin",
-      title: "Sign in",
-      description: "Use your email and password to continue.",
+      title: "Sign in to LeadFlow",
+      description: "Welcome back! Manage your leads with ease.",
+      button: "Sign In",
+      helper: (
+        <>
+          Don't have an account?{" "}
+          <button
+            type="button"
+            className="text-primary hover:underline"
+            onClick={() => setModeWithHash("signup")}
+          >
+            Sign up free.
+          </button>
+        </>
+      ),
     };
   }, [mode]);
 
@@ -113,21 +122,20 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
           <div className="relative z-10 flex h-full flex-col justify-between">
             <div className="space-y-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary/80">
-                Panda Access
+                LeadFlow Access
               </p>
               <h1 className="max-w-sm text-4xl font-semibold leading-tight tracking-tight">
-                Launch faster with one workspace for your team.
+                Effortless lead management for your business.
               </h1>
               <p className="max-w-md text-sm text-muted-foreground">
-                Secure auth, polished interface, and a clean onboarding flow built
-                for production teams.
+                Track, organize, and manage your sales leads all in one dashboard.
               </p>
             </div>
 
             <div className="relative overflow-hidden rounded-2xl border border-secondary/70 bg-background/80 p-3 shadow-lg">
               <Image
                 src="/demo-img.jpg"
-                alt="Panda product preview"
+                alt="LeadFlow product preview"
                 className="h-full w-full rounded-xl object-cover"
                 width={1200}
                 height={900}
@@ -143,24 +151,22 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                 <button
                   type="button"
                   onClick={() => setModeWithHash("signin")}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    mode === "signin"
+                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${mode === "signin"
                       ? "bg-background text-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
-                  }`}
+                    }`}
                 >
-                  Sign in
+                  Sign In
                 </button>
                 <button
                   type="button"
                   onClick={() => setModeWithHash("signup")}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    mode === "signup"
+                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${mode === "signup"
                       ? "bg-background text-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
-                  }`}
+                    }`}
                 >
-                  Sign up
+                  Sign Up
                 </button>
               </div>
 
@@ -173,18 +179,16 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
             <CardContent className="space-y-6">
               {flashStatus && flashMessage ? (
                 <div
-                  className={`rounded-lg border px-4 py-3 text-sm ${
-                    flashStatus === "success"
+                  className={`rounded-lg border px-4 py-3 text-sm ${flashStatus === "success"
                       ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-700 dark:text-emerald-400"
                       : "border-destructive/20 bg-destructive/5 text-destructive"
-                  }`}
+                    }`}
                 >
                   {flashMessage}
                 </div>
               ) : null}
 
               {mode === "signin" ? (
-                // Sign-in form submits directly to server action.
                 <form className="space-y-4" action={signInAction}>
                   {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
                   <div className="space-y-2">
@@ -215,21 +219,20 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                   </div>
 
                   <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? "Signing in..." : "Sign in"}
+                    {isPending ? "Signing in..." : content.button}
                   </Button>
                 </form>
               ) : (
-                // Sign-up form submits directly to server action.
                 <form className="space-y-4" action={signUpAction}>
                   {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="signup-first-name">First name</Label>
-                      <Input id="signup-first-name" name="firstName" placeholder="Chirag" required />
+                      <Input id="signup-first-name" name="firstName" placeholder="First name" required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-last-name">Last name</Label>
-                      <Input id="signup-last-name" name="lastName" placeholder="Dodiya" required />
+                      <Input id="signup-last-name" name="lastName" placeholder="Last name" required />
                     </div>
                   </div>
 
@@ -268,7 +271,7 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                   </div>
 
                   <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? "Creating account..." : "Create account"}
+                    {isPending ? "Creating account..." : content.button}
                   </Button>
                 </form>
               )}
@@ -284,6 +287,8 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                   {activeState.message}
                 </p>
               ) : null}
+
+              <div className="text-center mt-2">{content.helper}</div>
             </CardContent>
           </Card>
         </div>
