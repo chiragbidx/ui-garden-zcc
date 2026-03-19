@@ -17,3 +17,13 @@
 - Updated Docker app image install step to force clean dependency install:
   - `RUN rm -rf node_modules && pnpm install --prefer-offline --no-frozen-lockfile`
 - Updated README supervisor/runtime notes to match current defaults and env-file behavior.
+
+## 2026-06-11
+- Rebranded from Panda to LeadFlow throughout the site (home, navbar, dashboard, footer, contact).
+- Updated landing/hero, features, testimonials, and CTA for LeadFlow product positioning.
+- Refreshed navbar and footer with correct branding and navigation labels.
+- Applied LeadFlow branding to authentication surfaces.
+- Redesigned dashboard sidebar: "Overview," "Leads," and "Add Lead" as core nav, plus Settings/Team.
+- Added empty state and CTA copy for /dashboard/leads and /dashboard/leads/new.
+- Added /dashboard/overview route and text for pipeline empty state.
+- All copy/labels, CTAs, and structure now reflect the LeadFlow lead management use case.
