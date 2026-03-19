@@ -1,13 +1,13 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { createLeadAction } from "../actions";
 import { useRouter } from "next/navigation";
 
 const initialState = { error: null };
 
 export function CreateLeadForm() {
-  const [state, formAction] = useFormState(createLeadAction, initialState);
+  const [state, formAction] = useActionState(createLeadAction, initialState);
   const router = useRouter();
 
   return (
