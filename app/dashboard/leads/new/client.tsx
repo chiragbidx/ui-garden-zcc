@@ -14,7 +14,11 @@ export default function AddLeadClient() {
       <p className="mb-6 text-muted-foreground max-w-xl">
         Enter lead details to add a new lead.
       </p>
-      <form className="w-full max-w-sm mx-auto flex flex-col gap-4" action={formAction}>
+      <form
+        className="w-full max-w-sm mx-auto flex flex-col gap-4"
+        action={formAction}
+        autoComplete="off"
+      >
         <input
           name="name"
           className="rounded-md border border-secondary px-3 py-2 focus:outline-none focus:border-primary bg-background text-foreground"
