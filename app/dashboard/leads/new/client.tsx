@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { createLeadAction } from "./actions";
+import { createLeadAction } from "@/app/dashboard/leads/actions";
 
 const initialState = { error: null };
 
